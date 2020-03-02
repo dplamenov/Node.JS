@@ -4,10 +4,11 @@ var bodyParser = require('body-parser');
 const application = express();
 const router = require('./Router');
 
-application.set('views', './Views') // specify the views directory
-application.set('view engine', 'twig') // register the template engine
-application.use(bodyParser.json()); // support json encoded bodies
-application.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+application.set('views', './Views');
+application.set('view engine', 'twig');
+
+application.use(bodyParser.json());
+application.use(bodyParser.urlencoded({ extended: true }));
 application.use(router);
 
 
