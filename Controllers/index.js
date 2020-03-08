@@ -19,6 +19,7 @@ const saveTask = function (request, respone, next) {
     fs.appendFile('tasks.txt', `${data.title} - ${data.body}\n`, function (err) {
         if (err) throw err;
         console.log('Saved!');
+        respone.redirect("/");
     });
 };
 
