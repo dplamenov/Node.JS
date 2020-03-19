@@ -8,6 +8,6 @@ router.get('/', function (request, respone, next) {
     indexController.index(request, respone, next, database);
 });
 router.post('/', function (request, respone, next) {
-    indexController.saveTask(request, respone, next);
+    indexController.saveTask(request, respone, next, database);
 });
 module.exports = router;

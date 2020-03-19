@@ -5,13 +5,15 @@ const index = function (request, respone, next, database) {
         if (err) {
             throw err;
         }
-        respone.render('index', {tasks: result});
+        respone.render('index', { tasks: result });
     })
 };
 
-const saveTask = function (request, respone, next) {
+const saveTask = function (request, respone, next, database) {
     let data = request.body;
-    fs.appendFile('tasks.txt', `${data.title} - ${data.body}\n`, function (err) {
+    let sql = "INSERT INTO `tasks` (`task_title`, `task`) VALUES (?)";
+
+    database.query(sql, [[data.title, data.body]], function (err, result) {
         if (err) throw err;
         console.log('Saved!');
         respone.redirect("/");
