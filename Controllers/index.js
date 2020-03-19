@@ -1,17 +1,12 @@
-let fs = require('fs');
-const index = function (request, respone, next) {
-    fs.readFile('tasks.txt', function (err, data) {
-        data = data.toString('utf8').split('\n');
+const fs = require('fs');
 
-        let tasks = [];
-
-        data.forEach(function (el) {
-            let [title, body] = el.split(' - ');
-            let currentObj = { title, body };
-            tasks.push(currentObj);
-        });
-        respone.render('index', { tasks });
-    });
+const index = function (request, respone, next, database) {
+    database.query('SELECT * FROM `tasks`', function (err, result) {
+        if (err) {
+            throw err;
+        }
+        respone.render('index', {tasks: result});
+    })
 };
 
 const saveTask = function (request, respone, next) {
