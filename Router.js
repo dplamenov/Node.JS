@@ -10,4 +10,7 @@ router.get('/', function (request, respone, next) {
 router.post('/', function (request, respone, next) {
     indexController.saveTask(request, respone, next, database);
 });
+router.get('/edit/:task_id', function (request, respone, next) {
+    indexController.editTask(request, respone, next, database);
+});
 module.exports = router;
