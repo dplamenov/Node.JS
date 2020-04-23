@@ -12,18 +12,28 @@
         <label>
             Body <input type="text" name="body" />
         </label>
+        <label>
+            Status <input type="text" name="status" />
+        </label>
+        <label>
+            Due date <input type="text" name="dueDate" />
+        </label>
         <input type="submit"/>
     </form>
     <table>
         <tr>
             <th>Task title</th>
             <th>Task</th>
+            <th>Status</th>
+            <th>Due date</th>
             <th>Edit</th>
         </tr>
         {% for task in tasks %}
             <tr>
-                <td>{{ task.task_title }}</td>
-                <td>{{ task.task }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.body }}</td>
+                <td>{{ task.status }}</td>
+                <td>{{ task.dueDate }}</td>
                 <td><a href="/edit/{{task.task_id}}">Edit</a></td>
             </tr>
         {% endfor %}

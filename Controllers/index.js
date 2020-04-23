@@ -1,20 +1,18 @@
+const Task = require('../Models/Task');
+
 const index = function (request, respone, next, database) {
-    database.query('SELECT * FROM `tasks`', function (err, result) {
-        if (err) {
-            throw err;
-        }
-        respone.render('index', { tasks: result });
-    })
+
+    Task.find().then((data) => {
+        respone.render('index', { tasks: data });
+    });
 };
 
 const saveTask = function (request, respone, next, database) {
     let data = request.body;
-    let sql = "INSERT INTO `tasks` (`task_title`, `task`) VALUES (?)";
+    let task = new Task({ title: data.title, body: data.body, status: data.status, dueDate: data.dueDate });
 
-    database.query(sql, [[data.title, data.body]], function (err, result) {
-        if (err) throw err;
-        console.log('Saved!');
-        respone.redirect("/");
+    task.save(function (error, taks) {
+        respone.redirect('/');
     });
 };
 

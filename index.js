@@ -1,12 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-
-const tasks = mongoose.model('task', { name: String });
-tasks.find().then(task => {
-    console.log(task);
-})
-
 const application = express();
 const router = require('./Router');
 
