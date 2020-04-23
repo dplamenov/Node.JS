@@ -26,7 +26,8 @@
             <th>Task</th>
             <th>Status</th>
             <th>Due date</th>
-            <th>Edit</th>
+            <th colspan="3">Change status</th>
+            <th>Delete</th>
         </tr>
         {% for task in tasks %}
             <tr>
@@ -34,7 +35,9 @@
                 <td>{{ task.body }}</td>
                 <td>{{ task.status }}</td>
                 <td>{{ task.dueDate }}</td>
-                <td><a href="/edit/{{task.task_id}}">Edit</a></td>
+                <td><a href="">Open</a></td>
+                <td><a href="">In Progress</a></td>
+                <td><a href="">Closed</a></td>
             </tr>
         {% endfor %}
     </table>
