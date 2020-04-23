@@ -36,8 +36,6 @@ const editTask = function (request, respone, next, database) {
             })
         }
     });
-
-
 }
 
 module.exports = { index, saveTask, editTask };
