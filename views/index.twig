@@ -35,9 +35,10 @@
                 <td>{{ task.body }}</td>
                 <td>{{ task.status }}</td>
                 <td>{{ task.dueDate }}</td>
-                <td><a href="">Open</a></td>
-                <td><a href="">In Progress</a></td>
-                <td><a href="">Closed</a></td>
+                <td><a href="setStatus/{{task._id}}/Open">Open</a></td>
+                <td><a href="setStatus/{{task._id}}/In Progress">In Progress</a></td>
+                <td><a href="setStatus/{{task._id}}/Closed">Closed</a></td>
+                <td><a href="delete/{{task._id}}">Delete</a></td>
             </tr>
         {% endfor %}
     </table>

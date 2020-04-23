@@ -1,16 +1,18 @@
 const express = require('express');
-const database = require('./Database');
 const router = express.Router();
 
-let indexController = require('./Controllers/index');
+let taskController = require('./Controllers/taskController');
 
 router.get('/', function (request, respone, next) {
-    indexController.index(request, respone, next, database);
+    taskController.index(request, respone, next);
 });
 router.post('/', function (request, respone, next) {
-    indexController.saveTask(request, respone, next, database);
+    taskController.saveTask(request, respone, next);
 });
-router.get('/edit/:task_id', function (request, respone, next) {
-    indexController.editTask(request, respone, next, database);
+router.get('/setStatus/:taskId/:status', function (request, respone, next) {
+    taskController.setStatus(request, respone, next);
+});
+router.get('/delete/:taskId', function (request, respone, next) {
+    taskController.deleteTask(request, respone, next);
 });
 module.exports = router;
