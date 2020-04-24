@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Todo tasks</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <label>
             Title <input type="text" name="title" />
         </label>
@@ -13,10 +13,18 @@
             Body <input type="text" name="body" />
         </label>
         <label>
-            Status <input type="text" name="status" />
+            Status
+            <select name="status">
+                <option>Open</option>
+                <option>In Progress</option>
+                <option>Delete</option>
+            </select>
         </label>
         <label>
             Due date <input type="text" name="dueDate" />
+        </label>
+        <label>
+            Image <input type="file" name="image">
         </label>
         <input type="submit"/>
     </form>
@@ -32,13 +40,16 @@
         {% for task in tasks %}
             <tr>
                 <td>{{ task.title }}</td>
-                <td>{{ task.body }}</td>
+                <td>{{ task.body }}
+                   
+                </td>
                 <td>{{ task.status }}</td>
                 <td>{{ task.dueDate }}</td>
                 <td><a href="setStatus/{{task._id}}/Open">Open</a></td>
                 <td><a href="setStatus/{{task._id}}/In Progress">In Progress</a></td>
                 <td><a href="setStatus/{{task._id}}/Closed">Closed</a></td>
                 <td><a href="delete/{{task._id}}">Delete</a></td>
+                <td> <img src="taskImages/{{task._id}}.png" /></td>
             </tr>
         {% endfor %}
     </table>

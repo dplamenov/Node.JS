@@ -1,3 +1,8 @@
+//Node Modules
+const fs = require('fs');
+//npm Modules
+const formidable = require('formidable');
+//My Modules
 const Task = require('../Models/Task');
 
 const index = function (request, respone, next) {
@@ -8,11 +13,28 @@ const index = function (request, respone, next) {
 
 const saveTask = function (request, respone, next) {
     let data = request.body;
-    let task = new Task({ title: data.title, body: data.body, status: data.status, dueDate: data.dueDate });
+    // console.log(request);
 
-    task.save(function (error, taks) {
+
+    const form = new formidable.IncomingForm();
+
+
+
+    form.parse(request, function (err, data, files) {
+
+        const task = new Task({ title: data.title, body: data.body, status: data.status, dueDate: data.dueDate });
+        task.save(function (error, currentTask) {
+
+            let oldpath = files.image.path;
+            let newpath = `public/taskImages/${currentTask._id}.png`;
+            fs.rename(oldpath, newpath, function (err) {
+                if (err) throw err;
+                // respone.redirect('/');
+            });
+        });
         respone.redirect('/');
     });
+
 };
 
 const setStatus = function (request, respone, next) {
@@ -27,7 +49,6 @@ const setStatus = function (request, respone, next) {
 
 const deleteTask = function (request, respone, next) {
     let taskId = request.params.taskId;
-
     Task.findById(taskId).then((task) => {
         task.remove();
         respone.redirect('/');
