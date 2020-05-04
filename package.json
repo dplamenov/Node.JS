@@ -17,10 +17,14 @@
   },
   "homepage": "https://github.com/dplamenov/Node.JS#readme",
   "dependencies": {
+    "datam": "^1.0.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "formidable": "^1.2.2",
     "mongoose": "^5.9.9",
-    "mysql": "^2.18.1",
-    "twig": "^1.15.0"
+    "passport": "^0.4.1",
+    "session-file-store": "^1.4.0",
+    "twig": "^1.15.0",
+    "uuid": "^7.0.3"
   }
 }

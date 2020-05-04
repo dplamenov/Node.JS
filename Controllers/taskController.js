@@ -6,6 +6,7 @@ const formidable = require('formidable');
 const Task = require('../Models/Task');
 
 const index = function (request, respone, next) {
+
     Task.find().then((data, error) => {
         respone.render('index', { tasks: data });
     })
@@ -13,13 +14,7 @@ const index = function (request, respone, next) {
 
 const saveTask = function (request, respone, next) {
     let data = request.body;
-    // console.log(request);
-
-
     const form = new formidable.IncomingForm();
-
-
-
     form.parse(request, function (err, data, files) {
 
         const task = new Task({ title: data.title, body: data.body, status: data.status, dueDate: data.dueDate });
@@ -51,7 +46,10 @@ const deleteTask = function (request, respone, next) {
     let taskId = request.params.taskId;
     Task.findById(taskId).then((task) => {
         task.remove();
-        respone.redirect('/');
+
+        fs.unlink(`public/taskImages/${taskId}.png`, () => {
+            respone.redirect('/');
+        });
     });
 }
 
