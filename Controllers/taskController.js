@@ -5,29 +5,21 @@ const formidable = require('formidable');
 //My Modules
 const Task = require('../Models/Task');
 
-const index = function (request, respone, next) {
-    console.log(request.session);
+const index = function (request, response, next) {
 
-    if (request.session.views) {
-        request.session.views++
-        respone.setHeader('Content-Type', 'text/html')
-        respone.write('<p>views: ' + request.session.views + '</p>')
-        respone.write('<p>expires in: ' + (request.session.cookie.maxAge / 1000) + 's</p>')
-        respone.end()
-    } else {
-        request.session.views = 1
-        respone.end('welcome to the session demo. refresh!')
+    if (request.session.isLogin !== true) {
+        return response.redirect('/login');
     }
-
-    // Task.find().then((data, error) => {
-    //     respone.render('index', { tasks: data });
-    // })
+    Task.find().then((data, error) => {
+        response.render('index', { tasks: data });
+    })
 };
 
-const saveTask = function (request, respone, next) {
-    let data = request.body;
+const saveTask = function (request, response, next) {
     const form = new formidable.IncomingForm();
     form.parse(request, function (err, data, files) {
+
+        console.log(data);
 
         const task = new Task({ title: data.title, body: data.body, status: data.status, dueDate: data.dueDate });
         task.save(function (error, currentTask) {
@@ -36,33 +28,49 @@ const saveTask = function (request, respone, next) {
             let newpath = `public/taskImages/${currentTask._id}.png`;
             fs.rename(oldpath, newpath, function (err) {
                 if (err) throw err;
-                // respone.redirect('/');
+
             });
         });
-        respone.redirect('/');
+        response.redirect('/');
     });
 
 };
 
-const setStatus = function (request, respone, next) {
+const setStatus = function (request, response, next) {
     let taskId = request.params.taskId;
     Task.findById(taskId).then((task) => {
         task.status = request.params.status;
         task.save();
 
-        respone.redirect('/');
+        response.redirect('/');
     });
 }
 
-const deleteTask = function (request, respone, next) {
+const deleteTask = function (request, response, next) {
     let taskId = request.params.taskId;
     Task.findById(taskId).then((task) => {
         task.remove();
 
         fs.unlink(`public/taskImages/${taskId}.png`, () => {
-            respone.redirect('/');
+            response.redirect('/');
         });
     });
 }
 
-module.exports = { index, saveTask, setStatus, deleteTask };
+//post
+const login = function (request, response, next) {
+    // console.log();
+    const form = new formidable.IncomingForm();
+    form.parse(request, function (err, data) {
+        let { username, password } = data;
+
+        if (username === 'admin' && password === 'admin') {
+            request.session.isLogin = true;
+        }
+        response.redirect('/');
+
+    });
+
+}
+
+module.exports = { index, saveTask, setStatus, deleteTask, login };
