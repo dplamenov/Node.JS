@@ -6,10 +6,22 @@ const formidable = require('formidable');
 const Task = require('../Models/Task');
 
 const index = function (request, respone, next) {
+    console.log(request.session);
 
-    Task.find().then((data, error) => {
-        respone.render('index', { tasks: data });
-    })
+    if (request.session.views) {
+        request.session.views++
+        respone.setHeader('Content-Type', 'text/html')
+        respone.write('<p>views: ' + request.session.views + '</p>')
+        respone.write('<p>expires in: ' + (request.session.cookie.maxAge / 1000) + 's</p>')
+        respone.end()
+    } else {
+        request.session.views = 1
+        respone.end('welcome to the session demo. refresh!')
+    }
+
+    // Task.find().then((data, error) => {
+    //     respone.render('index', { tasks: data });
+    // })
 };
 
 const saveTask = function (request, respone, next) {
