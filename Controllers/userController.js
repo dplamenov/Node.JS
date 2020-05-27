@@ -1,20 +1,37 @@
 const formidable = require('formidable');
+const bcrypt = require('bcrypt');
 const User = require('../Models/User');
 
-const login = function (request, response, next) {
+const login = function (request, response) {
     const form = new formidable.IncomingForm();
-    form.parse(request, function (err, data) {
-        let { username, password } = data;
+    form.parse(request, function (_, data) {
+        const { username, password } = data;
+        User.find().then(function (data) {
 
-        if (username === 'admin' && password === 'admin') { //todo use database
-            request.session.isLogin = true;
-        }
-        response.redirect('/');
+            let bcryptResult;
+            for (let user of data) {
+                if (user.username === username) {
+                    bcryptResult = bcrypt.compareSync(password, user.password);
+                }
+            }
+
+            request.session.isLogin = bcryptResult;
+            response.redirect('/');
+        });
     });
 }
 
 const register = function (request, response) {
     const form = new formidable.IncomingForm();
+    form.parse(request, function (_, data) {
+        const { username, password } = data;
+        bcrypt.hash(password, 14, function (err, hash) {
+            let user = new User({ username, password: hash });
+            user.save(function () {
+                response.redirect('/');
+            });
+        });
+    });
 }
 
 
