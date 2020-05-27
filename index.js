@@ -17,7 +17,6 @@ application.use(session({
     secret: 'ba6af3c3870cf24268c92560fb4797d9e8e60ded',
     resave: false,
     saveUninitialized: true,
-
     cookie: { secure: false, maxAge: sessionConfig.maxAge }
 }))
 
