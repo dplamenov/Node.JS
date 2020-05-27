@@ -1,5 +1,6 @@
 const formidable = require('formidable');
 const bcrypt = require('bcrypt');
+// const config = rq
 const User = require('../Models/User');
 
 const login = function (request, response) {
@@ -10,7 +11,7 @@ const login = function (request, response) {
 
             let bcryptResult;
             for (let user of data) {
-                if (user.username === username) {
+                if (user.username === username && user.username !== '') {
                     bcryptResult = bcrypt.compareSync(password, user.password);
                 }
             }
